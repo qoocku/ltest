@@ -4,7 +4,7 @@
 (include-lib "ltest/include/ltest-records.lfe")
 
 (defun test-suite-header ()
-  (io:format (get-suite-header)))
+  (io:format (io_lib:format "~s" `(,(get-suite-header)))))
 
 (defun get-suite-header ()
   (ltest-color:greenb
@@ -12,7 +12,7 @@
                  (ltest-const:test-suite-header))))
 
 (defun test-suite-footer ()
-  (io:format (get-suite-footer)))
+  (io:format (io_lib:format "~s" `(,(get-suite-footer)))))
 
 (defun get-suite-footer ()
   (io_lib:format "~s~n~n" `(,(ltest-color:greenb
@@ -22,8 +22,8 @@
 
 (defun test-type-header (title)
   (io:format
-    (ltest-color:blueb
-      (test-header title (ltest-const:test-suite-subheader)))))
+    (io_lib:format "~s" `(,(ltest-color:blueb
+      (test-header title (ltest-const:test-suite-subheader)))))))
 
 (defun test-header (title char)
   (let* ((title (++ " " title " "))
@@ -163,11 +163,11 @@
                                     ,(state-time state))))
 
 (defun display-no-results (data state)
-  (io:format (ltest-color:yellow (get-no-results-report data state)))
-  (finish-section))
+  (io:format (io_lib:format "~s" `(,(ltest-color:yellow (get-no-results-report data state)))
+  (finish-section)))
 
 (defun display-test-cancel (reason)
-  (io:format (format-cancel reason)))
+  (io:format (io_lib:format "~s" `(,(format-cancel reason)))))
 
 (defun format-cancel
   (('undefined)  "*skipped*~n")
