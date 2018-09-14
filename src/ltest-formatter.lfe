@@ -163,9 +163,9 @@
                                     ,(state-time state))))
 
 (defun display-no-results (data state)
-  (io:format (io_lib:format "~s"
-                            `(,(lists:flatten (ltest-color:yellow (get-no-results-report data state))))
-                            (finish-section))))
+  (io:format (io_lib:format
+              "~s~s~s" (ltest-color:yellow (get-no-results-report data state))))
+  (finish-section))
 
 (defun display-test-cancel (reason)
   (io:format (io_lib:format "~s" `(,(format-cancel reason)))))
