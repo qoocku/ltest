@@ -48,21 +48,21 @@
 
 (defmacro deftest
   "Define a standard EUnit test."
-  ((name . body)
+  (((cons name body))
    (let ((name_test (list_to_atom (++ (to-unders name) "_test"))))
      `(progn (defun ,name_test () ,@body)
              (extend-module () ((export (,name_test 0))))))))
 
 (defmacro deftestgen
   "Define an EUnit test that uses test generators."
-  ((name . body)
+  (((cons name  body))
    (let ((name_test_ (list_to_atom (++ (to-unders name) "_test_"))))
      `(progn (defun ,name_test_ () ,@body)
              (extend-module () ((export (,name_test_ 0))))))))
 
 (defmacro deftestskip
   "Define a standard EUnit test that will be skipped (not run)."
-  ((name . body)
+  (((const name body))
    `(defun ,(list_to_atom (++ (to-unders name) "_skip")) ()
       ,@body)))
 
@@ -92,22 +92,22 @@
   ;;Return true if we have (tuple "name"...) or #("Name"...)
   (defun is-named-tuple
     ((t) (when (is_tuple t))
-      (io_lib:printable_list (element 1 t)))
+     (io_lib:printable_list (element 1 t)))
     ((t) (when (is_list t))
-      (andalso (== 'tuple (hd t))
-               (io_lib:printable_list (cadr t))))
+     (andalso (== 'tuple (hd t))
+              (io_lib:printable_list (cadr t))))
     ((other) 'false))
 
   ;;Return (tuple "Name" lambda() ...) from (tuple "Name" ...)
   (defun mk-named-tuple
     ((t) (when (is_tuple t))
-      `(tuple ,(element 1 t)
-              (lambda ()
-                ,(list_to_tuple (tl (tuple_to_list t))))))
+     `(tuple ,(element 1 t)
+             (lambda ()
+               ,(list_to_tuple (tl (tuple_to_list t))))))
     ((t) (when (is_list t))
-      `(tuple ,(cadr t)
-              (lambda ()
-                ,(list_to_tuple (cdr t)))))))
+     `(tuple ,(cadr t)
+             (lambda ()
+               ,(list_to_tuple (cdr t)))))))
 
 (defmacro deftestcase
   "This macro is for defining EUnit tests for use by fixtures which have
@@ -115,15 +115,15 @@
   ((func-name args . rest)
    `(defun ,(list_to_atom (++ (to-unders func-name) "_test_case")) (,@args)
       (list
-        ,@(lists:map
-            (lambda (part)
-              (if (is-named-tuple part)
-                ;Make a named tuple if part is a tuple and its
-                ;1st element is printable
-                (mk-named-tuple part)
-                ;Otherwise just make a lamdba
-                `(lambda () ,part)))
-            rest)))))
+       ,@(lists:map
+          (lambda (part)
+            (if (is-named-tuple part)
+                                        ;Make a named tuple if part is a tuple and its
+                                        ;1st element is printable
+              (mk-named-tuple part)
+                                        ;Otherwise just make a lamdba
+              `(lambda () ,part)))
+          rest)))))
 
 (defmacro deftestcases funcs
   "This macro expects one or more function *names* which have been defined
