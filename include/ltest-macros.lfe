@@ -52,7 +52,7 @@
          (body (cdr contents))
          (name_test (list_to_atom (++ (to-unders name) "_test"))))
     `(progn (defun ,name_test () ,@body)
-             (extend-module () ((export (,name_test 0))))))))
+             (extend-module () ((export (,name_test 0)))))))
 
 (defmacro deftestgen
   "Define an EUnit test that uses test generators."
