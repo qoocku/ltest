@@ -164,7 +164,7 @@
 
 (defun display-no-results (data state)
   (io:format (io_lib:format "~s"
-                            `(,(ltest-color:yellow (get-no-results-report data state)))
+                            `(,(lists:flatten (ltest-color:yellow (get-no-results-report data state))))
                             (finish-section))))
 
 (defun display-test-cancel (reason)
