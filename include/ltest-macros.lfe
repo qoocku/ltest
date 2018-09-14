@@ -46,11 +46,12 @@
 ;;; Test definition macros
 ;;;===================================================================
 
-(defmacro deftest
+(defmacro deftest contents
   "Define a standard EUnit test."
-  (((cons name body))
-   (let ((name_test (list_to_atom (++ (to-unders name) "_test"))))
-     `(progn (defun ,name_test () ,@body)
+  (let* ((name (car contents))
+         (body (cdr contents))
+         (name_test (list_to_atom (++ (to-unders name) "_test"))))
+    `(progn (defun ,name_test () ,@body)
              (extend-module () ((export (,name_test 0))))))))
 
 (defmacro deftestgen
@@ -112,7 +113,7 @@
 (defmacro deftestcase
   "This macro is for defining EUnit tests for use by fixtures which have
   particular naming convention needs."
-  ((func-name args . rest)
+  (((list func-name args (list rest)))
    `(defun ,(list_to_atom (++ (to-unders func-name) "_test_case")) (,@args)
       (list
        ,@(lists:map
