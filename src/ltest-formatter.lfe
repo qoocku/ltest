@@ -130,7 +130,7 @@
   (finish-section))
 
 (defun stats-heading ()
-  (io:format (++ (ltest-color:yellow "summary:") "~n")))
+  (io:format (list_to_binary (++ (ltest-color:yellow "summary:") "~n"))))
 
 (defun display-all (state)
   (io:format "~sTests: ~p  " `(,(indent (ltest-const:func-indent))
@@ -146,7 +146,7 @@
 
 (defun display-failures (state)
   (io:format "~s: ~p " `(,(get-fail-report state)
-                          ,(state-fail state))))
+                         ,(state-fail state))))
 
 (defun display-errors (state)
   (io:format "~s: ~p~n" `(,(get-err-report state)
@@ -160,7 +160,7 @@
 
 (defun display-timing (state)
   (io:format "~sTotal time: ~pms~n" `(,(indent (ltest-const:func-indent))
-                                    ,(state-time state))))
+                                      ,(state-time state))))
 
 (defun display-no-results (data state)
   (io:format (io_lib:format
@@ -175,23 +175,23 @@
   (('timeout)    "*timed out*~n")
 
   ((`#(startup ,reason))
-    (io_lib:format "*could not start test process*~n::~tP~n~n"
-                   (list reason 15)))
+   (io_lib:format "*could not start test process*~n::~tP~n~n"
+                  (list reason 15)))
 
   ((`#(blame ,_subid))
-    "*cancelled because of subtask*~n")
+   "*cancelled because of subtask*~n")
 
   ((`#(exit ,reason))
-    (io_lib:format "*unexpected termination of test process*~n::~tP~n~n"
-                   (list reason 15)))
+   (io_lib:format "*unexpected termination of test process*~n::~tP~n~n"
+                  (list reason 15)))
 
   ((`#(abort ,reason))
-    (eunit_lib:format_error reason)))
+   (eunit_lib:format_error reason)))
 
 (defun get-no-results-report (data state)
   (io_lib:format
-    "There were no ~s tests found.~n"
-    `(,(state-test-type state))))
+   "There were no ~s tests found.~n"
+   `(,(state-test-type state))))
 
 (defun finish-section ()
   (io:nl)
@@ -211,5 +211,5 @@
 
 (defun get-report (text color-func count)
   (if (== count 0)
-      text
-      (funcall color-func text)))
+    text
+    (funcall color-func text)))
